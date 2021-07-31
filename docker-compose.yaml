@@ -10,8 +10,6 @@ services:
       - POSTGRES_PASSWORD=postgres
     volumes:
       - ./mynote-db/data:/var/lib/postgresql/data
-    networks:
-      - mynote
   mynote-be:
     build: ./mynote-be
     image: mynote-be:stable
@@ -25,28 +23,13 @@ services:
       - APP_DB_USERNAME=postgres
       - APP_DB_PASSWORD=postgres
       - DB_NAME=postgres
-    networks:
-      - mynote
   mynote-fe:
     build: ./mynote-fe
     image: mynote-fe:stable
     depends_on:
       - mynote-be
-    networks:
-      - proxy
-      - mynote
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.mynote.entrypoints=http"
-      - "traefik.http.routers.mynote.rule=Host(`mynote.svc.localgalaxy.org`)"
-      - "traefik.http.middlewares.mynote-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers.mynote.middlewares=mynote-https-redirect"
-      - "traefik.http.routers.mynote-secure.entrypoints=https"
-      - "traefik.http.routers.mynote-secure.rule=Host(`mynote.svc.localgalaxy.org`)"
-      - "traefik.http.routers.mynote-secure.tls=true"
-      - "traefik.http.routers.mynote-secure.service=mynote"
-      - "traefik.http.services.mynote.loadbalancer.server.port=80"
-      - "traefik.docker.network=proxy"
+    ports:
+      - "8082:80"
   mynote-lb:
     build: ./mynote-lb
     image: mynote-lb:stable 
@@ -54,10 +37,3 @@ services:
       - mynote-be
     ports:
       - "4000:4000"
-    networks:
-      - mynote
-networks:
-  proxy:
-    external: true
-  mynote:
-    external: false
