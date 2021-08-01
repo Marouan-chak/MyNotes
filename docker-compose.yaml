@@ -25,7 +25,7 @@ services:
       - DB_NAME=postgres
   mynote-fe:
     build: ./mynote-fe
-    image: mynote-fe:stable
+    image: mynote-fe:stable2
     depends_on:
       - mynote-be
     ports:
