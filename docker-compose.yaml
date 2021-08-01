@@ -5,7 +5,7 @@ services:
     build: ./mynote-db
     image: mynote-db:stable
     ports:
-      - "5432:5432"
+      - "5432"
     environment:
       - POSTGRES_PASSWORD=postgres
     volumes:
@@ -18,14 +18,14 @@ services:
     ports:
       - "10000"
     environment:
-      - DB_URL=192.168.0.17
+      - DB_URL=mynote-db
       - DB_PORT=5432
       - APP_DB_USERNAME=postgres
       - APP_DB_PASSWORD=postgres
       - DB_NAME=postgres
   mynote-fe:
     build: ./mynote-fe
-    image: mynote-fe:stable2
+    image: mynote-fe:stable3
     depends_on:
       - mynote-be
     ports:
