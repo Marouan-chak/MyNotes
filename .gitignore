@@ -1,1 +1,3 @@
 mynote-db/data/
+mynote-be/.env
+node_modules
