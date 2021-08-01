@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import {Button, Card, Header, Form, Input, Icon, TextArea } from "semantic-ui-react";
+
+import {CardGroup, Button, Card, Header, Form, Input,  TextArea } from "semantic-ui-react";
+
 import axios from 'axios'
 class PostForm extends Component {
 	constructor(props) {
@@ -11,6 +13,7 @@ class PostForm extends Component {
 			text: '',
 			edit: false,
 			editId: '',
+			items: []
 		}
 	}
 	componentDidMount() {
@@ -62,11 +65,8 @@ class PostForm extends Component {
 				):(
 				  
                 <Card.Content>
-                  <Card.Header textAlign="left">
-                    <div style={{ wordWrap: "break-word" }}>{item.id} {item.title}</div>
-                    <br/>
-                    <div style={{ wordWrap: "break-word" }}>{item.text}</div>
-                  </Card.Header>
+					<Card.Content header={item.title}/>
+					<Card.Content description={item.text} />
 
                   <Card.Meta textAlign="right">
                     <Button
@@ -142,7 +142,7 @@ class PostForm extends Component {
 
 
 	render() {
-		const { id, title, text} = this.state
+		const { title, text} = this.state
 		const show=!this.state.edit
 		return (
 			<div>
@@ -177,7 +177,7 @@ class PostForm extends Component {
 					</div>
 					<br></br>
 					<div className="row">
-				<Card.Group>{this.state.items}</Card.Group>
+				<CardGroup>{this.state.items}</CardGroup>
 				</div>
 			</div>
 		)
