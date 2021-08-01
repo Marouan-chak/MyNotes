@@ -37,3 +37,4 @@ services:
       - mynote-be
     ports:
       - "4000:4000"
+
