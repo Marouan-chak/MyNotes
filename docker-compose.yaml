@@ -23,6 +23,11 @@ services:
       - APP_DB_USERNAME=postgres
       - APP_DB_PASSWORD=postgres
       - DB_NAME=postgres
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mynote-be.rule=Host(`mynote.svc.localgalaxy.org`)"
+      - "traefik.http.routers.mynote-be.entryPoints=http"
+      - "traefik.port=10000"
   mynote-fe:
     build: ./mynote-fe
     image: mynote-fe:stable3
@@ -30,10 +35,27 @@ services:
       - mynote-be
     ports:
       - "8082:80"
-  mynote-lb:
-    build: ./mynote-lb
-    image: mynote-lb:stable 
-    depends_on:
-      - mynote-be
+        #  mynote-lb:
+        #    build: ./mynote-lb
+        #    image: mynote-lb:stable 
+        #    depends_on:
+        #      - mynote-be
+        #    ports:
+        #      - "4000:4000"
+  reverse-proxy:
+    image: traefik:latest
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     ports:
-      - "4000:4000"
+      - "8081:80" # The HTTP port
+      - "8083:8080" # The Web UI (enabled by --api)
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./mynote-rp/traefik.yml:/traefik.yml:ro
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.entrypoints=http"
+      - "traefik.http.routers.traefik.rule=Host(`traefik-mynote.svc.localgalaxy.org`)"
+
