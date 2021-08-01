@@ -16,7 +16,7 @@ services:
     depends_on:
       - mynote-db
     ports:
-      - "10000:10000"
+      - "10000"
     environment:
       - DB_URL=mynote-db
       - DB_PORT=5432
