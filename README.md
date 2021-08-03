@@ -7,7 +7,7 @@ Docker compose version: 1.29.2
 ```
 # Clone MyNotes repository
 git clone https://github.com/Marouan-chak/MyNotes.git
-cd M yNotes
+cd MyNotes
 # Run docker-compose
 docker-compose up -d
 ```
