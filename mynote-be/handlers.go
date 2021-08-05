@@ -31,23 +31,6 @@ func store(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Unable to decode the request body.  %v", err)
 	}
 
-	// call storeNote function and pass the note
-	insertID := storeNote(note)
-
-	// format a response object
-	res := response{
-		ID:      insertID,
-		Message: "Note created successfully",
-	}
-
-	// send the response
-	json.NewEncoder(w).Encode(res)
-
-}
-
-// insert one note in the DB
-func storeNote(note Note) int64 {
-
 	// create the postgres db connection
 	db := createConnection()
 
@@ -58,7 +41,7 @@ func storeNote(note Note) int64 {
 	var id int64
 
 	// execute the sql statement
-	err := db.QueryRow(sqlStatement, note.Title, note.Text).Scan(&id)
+	err = db.QueryRow(sqlStatement, note.Title, note.Text).Scan(&id)
 
 	if err != nil {
 		log.Fatalf("Unable to execute the query. %v", err)
@@ -66,29 +49,26 @@ func storeNote(note Note) int64 {
 
 	fmt.Printf("Inserted a single record %v", id)
 
-	// return the inserted id
-	return id
+	// format a response object
+	res := response{
+		ID:      id,
+		Message: "Note created successfully",
+	}
+
+	// send the response
+	json.NewEncoder(w).Encode(res)
+
 }
+
+// insert one note in the DB
 
 func retrieve(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Context-Type", "application/x-www-form-urlencoded")
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	// get all the notes in the db
-	notes, err := getAllNotes()
-
-	if err != nil {
-		log.Fatalf("Unable to get all note. %v", err)
-	}
-
-	// send all the  notes as response
-	json.NewEncoder(w).Encode(notes)
-}
-func getAllNotes() ([]Note, error) {
 	// create the postgres db connection
-	db := createConnection()
-
 	var notes []Note
-
+	db := createConnection()
 	// create the select sql query
 	sqlStatement := `SELECT * FROM notes`
 
@@ -117,10 +97,13 @@ func getAllNotes() ([]Note, error) {
 
 	}
 
-	// return empty note on error
-	return notes, err
-}
+	if err != nil {
+		log.Fatalf("Unable to get all note. %v", err)
+	}
 
+	// send all the  notes as response
+	json.NewEncoder(w).Encode(notes)
+}
 func updateNote(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/x-www-form-urlencoded")
@@ -148,26 +131,6 @@ func updateNote(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("Unable to decode the request body.  %v", err)
 	}
 
-	// call update note to update the note
-	updatedRows := UpdateNote(int64(id), note)
-
-	// format the message string
-	msg := fmt.Sprintf("Note updated successfully. Total rows/record affected %v", updatedRows)
-
-	// format the response message
-	res := response{
-		ID:      int64(id),
-		Message: msg,
-	}
-
-	// send the response
-	json.NewEncoder(w).Encode(res)
-
-}
-
-// update note in the DB
-func UpdateNote(id int64, note Note) int64 {
-
 	// create the postgres db connection
 	db := createConnection()
 
@@ -192,8 +155,18 @@ func UpdateNote(id int64, note Note) int64 {
 	}
 
 	fmt.Printf("Total rows/record affected %v", rowsAffected)
+	// format the message string
+	msg := fmt.Sprintf("Note updated successfully. Total rows/record affected %v", rowsAffected)
 
-	return rowsAffected
+	// format the response message
+	resp := response{
+		ID:      int64(id),
+		Message: msg,
+	}
+
+	// send the response
+	json.NewEncoder(w).Encode(resp)
+
 }
 
 func deleteNote(w http.ResponseWriter, r *http.Request) {
@@ -212,33 +185,6 @@ func deleteNote(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		log.Fatalf("Unable to convert the string into int.  %v", err)
 	}
-
-	// call the deleteNote, convert the int to int64
-	deletedRows := DeleteNote(int64(id))
-
-	// format the message string
-	msg := fmt.Sprintf("Note updated successfully. Total rows/record affected %v", deletedRows)
-
-	// format the reponse message
-	res := response{
-		ID:      int64(id),
-		Message: msg,
-	}
-
-	// send the response
-	json.NewEncoder(w).Encode(res)
-}
-
-func HealthCheck(w http.ResponseWriter, r *http.Request) {
-	//specify status code
-	w.WriteHeader(http.StatusOK)
-
-	//update response writer
-	fmt.Fprintf(w, "API is up and running")
-}
-
-func DeleteNote(id int64) int64 {
-
 	// create the postgres db connection
 	db := createConnection()
 
@@ -264,7 +210,25 @@ func DeleteNote(id int64) int64 {
 
 	fmt.Printf("Total rows/record affected %v", rowsAffected)
 
-	return rowsAffected
+	// format the message string
+	msg := fmt.Sprintf("Note updated successfully. Total rows/record affected %v", rowsAffected)
+
+	// format the reponse message
+	resp := response{
+		ID:      int64(id),
+		Message: msg,
+	}
+
+	// send the response
+	json.NewEncoder(w).Encode(resp)
+}
+
+func HealthCheck(w http.ResponseWriter, r *http.Request) {
+	//specify status code
+	w.WriteHeader(http.StatusOK)
+
+	//update response writer
+	fmt.Fprintf(w, "API is up and running")
 }
 
 var Notes []Note
@@ -275,6 +239,6 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	fmt.Println("Rest API v2.0 - Mux Routers")
+	fmt.Println("MyNotes Back-end")
 	handleRequests()
 }
