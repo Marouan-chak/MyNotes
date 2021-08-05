@@ -16,7 +16,7 @@ import (
 )
 
 func handleRequests() {
-	// creates a new instance of a mux router
+	// creates a new instance of a mux ro:w
 	myRouter := mux.NewRouter().StrictSlash(true)
 	// replace http.HandleFunc with myRouter.HandleFunc
 	myRouter.HandleFunc("/", homePage)
@@ -25,5 +25,6 @@ func handleRequests() {
 	myRouter.HandleFunc("/api/retrieve/{id}", retrieveSingleNote)
 	myRouter.HandleFunc("/api/delete/{id}", deleteNote).Methods("DELETE")
 	myRouter.HandleFunc("/api/update/{id}", updateNote).Methods("PUT")
+	myRouter.HandleFunc("/api/health-check", HealthCheck).Methods("GET")
 	log.Fatal(http.ListenAndServe(":10000", myRouter))
 }

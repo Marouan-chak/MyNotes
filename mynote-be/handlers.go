@@ -297,6 +297,14 @@ func deleteNote(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(res)
 }
 
+func HealthCheck(w http.ResponseWriter, r *http.Request) {
+	//specify status code
+	w.WriteHeader(http.StatusOK)
+
+	//update response writer
+	fmt.Fprintf(w, "API is up and running")
+}
+
 func DeleteNote(id int64) int64 {
 
 	// create the postgres db connection
