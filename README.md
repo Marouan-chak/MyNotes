@@ -18,4 +18,5 @@ docker-compose up -d --scale mynote-be=5
 ```
 ## Architecture  
 The following picture describe the different components of MyNotes App:
+
 ![alt text](https://github.com/Marouan-chak/MyNotes/blob/master/MyNotes.png?raw=true)
