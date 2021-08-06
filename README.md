@@ -1,7 +1,7 @@
 # MyNotes
 ## Environment setup
 OS: linux (Ubuntu/centos/raspbian tested)  
-Docker version: 19.03.13  
+Docker version: +19.03.13  
 Docker compose version: 1.29.2  
 ## Getting and running MyNotes  
 ```
