@@ -1,5 +1,4 @@
 mynote-db/data/
-.gitignore
 mynote-fe/node_modules/
 mynote-fe/src/PostForm.js.bak
 mynote-be/go.*
