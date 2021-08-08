@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.be.name }} 
+  labels:
+    app: {{ .Values.be.name }} 
+spec:
+  replicas: {{ .Values.be.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.be.name}} 
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.be.name }}
+    spec:
+      containers:
+        - image: {{ .Values.be.image }}
+          imagePullPolicy: {{ .Values.be.pullPolicy }}
+          name: {{ .Values.be.name}}
+          ports:
+            - name: be
+              containerPort: {{ .Values.be.port }} 
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: be-config 

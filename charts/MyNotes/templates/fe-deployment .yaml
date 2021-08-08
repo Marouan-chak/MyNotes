@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.fe.name }} 
+  labels:
+    app: {{ .Values.fe.name }} 
+spec:
+  replicas: {{ .Values.fe.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.fe.name}} 
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.fe.name }}
+    spec:
+      containers:
+        - image: {{ .Values.fe.image }}
+          name: {{ .Values.fe.name}}
+          imagePullPolicy: {{ .Values.fe.pullPolicy }}
+          ports:
+            - name: be
+              containerPort: {{ .Values.fe.port }} 
+              protocol: TCP

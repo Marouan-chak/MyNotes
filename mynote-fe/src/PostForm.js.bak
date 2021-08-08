@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import {Button, Card, Header, Form, Input,  TextArea } from "semantic-ui-react";
+
+import {CardGroup, Button, Card, Header, Form, Input,  TextArea } from "semantic-ui-react";
+
 import axios from 'axios'
 class PostForm extends Component {
 	constructor(props) {
@@ -11,6 +13,7 @@ class PostForm extends Component {
 			text: '',
 			edit: false,
 			editId: '',
+			items: []
 		}
 	}
 	componentDidMount() {
@@ -31,7 +34,7 @@ class PostForm extends Component {
 
             return (
 				
-              <Card fluid key={item.id}  >
+              <Card id={item.id}  fluid>
 				  
 				{ this.state.editId === item.id ? (
 						<Form >
@@ -40,7 +43,8 @@ class PostForm extends Component {
 									type="text"
 									name="title"
 									defaultValue={item.title}
-									onChange={this.changeHandler.bind(this)}
+									onChange={this.changeHandler}
+									fluid
 									placeholder="Title of note"
 									required
 								/>
@@ -50,7 +54,8 @@ class PostForm extends Component {
 									type="text"
 									name="text"
 									defaultValue={item.text}
-									onChange={this.changeHandler.bind(this)}
+									onChange={this.changeHandler}
+									fluid
 									placeholder="Content of note"
 								/>
 							</Form.Field>
@@ -60,11 +65,8 @@ class PostForm extends Component {
 				):(
 				  
                 <Card.Content>
-                  <Card.Header textAlign="left">
-                    <div style={{ wordWrap: "break-word" }}>{item.id} {item.title}</div>
-                    <br/>
-                    <div style={{ wordWrap: "break-word" }}>{item.text}</div>
-                  </Card.Header>
+					<Card.Content header={item.title}/>
+					<Card.Content description={item.text} />
 
                   <Card.Meta textAlign="right">
                     <Button
@@ -76,7 +78,7 @@ class PostForm extends Component {
                     <Button
                       name="delete"
                       color="red"
-					  onClick={() => this.deleteHandler(item.id).bind(this)}
+					  onClick={() => this.deleteHandler(item.id)}
                     />
                     <span style={{ paddingRight: 10 }}>Delete</span>
                   </Card.Meta>
@@ -143,7 +145,7 @@ class PostForm extends Component {
 		const { title, text} = this.state
 		const show=!this.state.edit
 		return (
-			<div >
+			<div>
 				<div className="row">
 				<Header as='h1' content='MyNote APP' style={{marginTop: '3em',marginBottom: '3em'}} textAlign='center' />
 				</div>
@@ -155,25 +157,27 @@ class PostForm extends Component {
 									name="title"
 									value={title}
 									onChange={this.changeHandler}
+									fluid
 									placeholder="Title of note"
 									required
 								/>
 							</Form.Field>
 							<Form.Field>
-								<textarea
+								<TextArea
 									type="text"
 									name="text"
 									value={text}
 									onChange={this.changeHandler}
+									fluid
 									placeholder="Content of note"
-								></textarea>
+								/>
 							</Form.Field>
 							<Button type="submit">Create Note</Button>
 						</Form>}
 					</div>
 					<br></br>
 					<div className="row">
-				<Card.Group>{this.state.items}</Card.Group>
+				<CardGroup>{this.state.items}</CardGroup>
 				</div>
 			</div>
 		)

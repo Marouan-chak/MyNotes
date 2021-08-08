@@ -1,0 +1,36 @@
+be:
+  name: mynote-be
+  image: localhost:5000/mynote-be:stable
+  replicaCount: 1
+  pullPolicy: Always 
+  port: 10000
+  healthUrl: http://mynotes-be:10000/api/health-check
+  data:
+    - key: DB_URL
+      value: mynote-db
+    - key: DB_PORT
+      value: 5432
+    - key: APP_DB_PASSWORD
+      value: postgres
+    - key: APP_DB_USERNAME
+      value: postgres
+    - key: DB_NAME
+      value: postgres
+fe:
+  name: mynote-fe
+  image: localhost:5000/mynote-fe
+  replicaCount: 1
+  pullPolicy: Always 
+  port: 80
+  nodePort: 30080
+db:
+  name: mynote-db
+  image: localhost:5000/mynote-db:stable
+  replicaCount: 1
+  pullPolicy: Always 
+  port: 5432
+  data:
+    - key: POSTGRES_PASSWORD
+      value: postgres
+
+
