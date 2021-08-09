@@ -24,12 +24,13 @@ A helm chart is provided in order to deploy MyNotes App on a Kubernetes cluster.
 - Helm v3
 - A docker registry
 ### Steps
-Build and push docker images to a registry
-Customize the `values.yaml` with correct values
+Build and push docker images to a registry  
+Customize the `values.yaml` with correct values  
 Install the Chart
 ```
 helm install mynotes MyNotes
 ```
+
 ## Architecture  
 The following picture describe the different components of MyNotes App:
 
