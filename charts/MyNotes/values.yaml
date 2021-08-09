@@ -1,6 +1,6 @@
 be:
   name: mynote-be
-  image: localhost:5000/mynote-be:stable
+  image: 172.16.11.35:30003/library/mynote-be:stable
   replicaCount: 1
   pullPolicy: Always 
   port: 10000
@@ -18,14 +18,14 @@ be:
       value: postgres
 fe:
   name: mynote-fe
-  image: localhost:5000/mynote-fe
+  image: 172.16.11.35:30003/library/mynote-fe:latest 
   replicaCount: 1
   pullPolicy: Always 
   port: 80
   nodePort: 30080
 db:
   name: mynote-db
-  image: localhost:5000/mynote-db:stable
+  image: 172.16.11.35:30003/library/mynote-db:stable 
   replicaCount: 1
   pullPolicy: Always 
   port: 5432

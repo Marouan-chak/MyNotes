@@ -6,7 +6,7 @@ metadata:
   name: {{ .Values.fe.name }}
 spec:
   ports:
-  - nodePort: {{ .Values.fe.nodeport }}
+  - nodePort: {{ .Values.fe.nodePort }} 
     port: {{ .Values.fe.port }} 
     protocol: TCP
     targetPort: {{ .Values.fe.port }} 
