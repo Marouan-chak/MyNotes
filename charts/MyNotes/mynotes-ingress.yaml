@@ -1,0 +1,18 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: mynotes-web 
+  namespace: mynotes 
+spec:
+  entryPoints:                      # [1]
+  - websecure 
+  - web
+  routes:                           # [2]
+  - kind: Rule
+    match: Host(`mynotes.localgalaxy.org`) # [3]
+    services:                       # [8]
+    - kind: Service
+      name: mynote-fe 
+      namespace: mynotes 
+      port:  80
+      #scheme: https

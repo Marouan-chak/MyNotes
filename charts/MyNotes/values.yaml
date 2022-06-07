@@ -1,6 +1,6 @@
 be:
   name: mynote-be
-  image: 172.16.11.35:30003/library/mynote-be:stable
+  image: ghcr.io/marouan-chak/mynote-be:latest 
   replicaCount: 1
   pullPolicy: Always 
   port: 10000
@@ -18,14 +18,14 @@ be:
       value: postgres
 fe:
   name: mynote-fe
-  image: 172.16.11.35:30003/library/mynote-fe:latest 
+  image: ghcr.io/marouan-chak/mynote-fe:latest 
   replicaCount: 1
   pullPolicy: Always 
   port: 80
   nodePort: 30080
 db:
   name: mynote-db
-  image: 172.16.11.35:30003/library/mynote-db:stable 
+  image: ghcr.io/marouan-chak/mynote-db:latest 
   replicaCount: 1
   pullPolicy: Always 
   port: 5432
